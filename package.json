@@ -1,0 +1,14 @@
+{
+  "name": "benevolence-playground",
+  "private": true,
+  "version": "0.0.2",
+  "scripts": {
+    "serve": "npx http-server ./frontend -p 8081 -c-1",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^13.14.2",
+    "http-server": "^14.1.1"
+  }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benevolence Frontend</title>
+  <!-- Optional Sentry - add DSN if you have one
+  <script src="https://browser.sentry-cdn.com/7.120.1/bundle.tracing.min.js" crossorigin="anonymous"></script>
+  <script> Sentry.init({ dsn: "YOUR_SENTRY_DSN" }); </script>
+  -->
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 2rem; }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); }
+    .card { padding: 1rem; border: 1px solid #ddd; border-radius: 10px; }
+    button { padding: 0.5rem 1rem; }
+    input { padding: 0.5rem; width: 100%; margin: 0.25rem 0; }
+    pre { background: #f8f8f8; padding: 1rem; border-radius: 8px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Benevolence Frontend</h1>
+  <div class="grid">
+    <div class="card">
+      <h3>Hello API</h3>
+      <button id="btn-hello">Fetch Hello</button>
+      <pre id="out-hello">Click to fetch...</pre>
+    </div>
+    <div class="card">
+      <h3>Users API</h3>
+      <form id="user-form">
+        <label>Name</label>
+        <input id="user-name" placeholder="Alice" />
+        <button type="submit">Create User</button>
+      </form>
+      <button id="btn-users">Fetch Users</button>
+      <pre id="out-users">No users fetched yet.</pre>
+    </div>
+  </div>
+
+  <script>
+    const helloBtn = document.getElementById('btn-hello');
+    const helloOut = document.getElementById('out-hello');
+    const usersBtn = document.getElementById('btn-users');
+    const usersOut = document.getElementById('out-users');
+    const form = document.getElementById('user-form');
+    const nameInput = document.getElementById('user-name');
+
+    const API = 'http://localhost:8080/api';
+
+    helloBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(API + '/hello');
+        helloOut.textContent = await res.text();
+      } catch (e) {
+        helloOut.textContent = 'Error: ' + e.message;
+      }
+    });
+
+    usersBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(API + '/users');
+        const data = await res.json();
+        usersOut.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        usersOut.textContent = 'Error: ' + e.message;
+      }
+    });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      try {
+        const res = await fetch(API + '/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: nameInput.value })
+        });
+        const data = await res.json();
+        usersOut.textContent = 'Created: ' + JSON.stringify(data, null, 2);
+        nameInput.value = '';
+      } catch (e) {
+        usersOut.textContent = 'Error: ' + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
