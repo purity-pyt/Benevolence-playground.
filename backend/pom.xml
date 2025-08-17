@@ -81,12 +81,26 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-    <testSourceDirectory>src/test/groovy</testSourceDirectory>
-  </build>
-</project>
+  <plugins>
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <version>3.2.4</version>
+    </plugin>
+
+    <plugin>
+      <groupId>org.codehaus.gmavenplus</groupId>
+      <artifactId>gmavenplus-plugin</artifactId>
+      <version>3.13.0</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>addTestSources</goal>
+            <goal>testCompile</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+
